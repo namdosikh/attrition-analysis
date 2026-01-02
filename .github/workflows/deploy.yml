@@ -8,24 +8,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout repo
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # 2. Setup Pages
-      - uses: actions/configure-pages@v3
-
-      # 3. Convert Jupyter notebook to HTML
-      - name: Convert notebook
+      - name: Install nbconvert
         run: |
           pip install nbconvert
+
+      - name: Convert notebook to HTML
+        run: |
           jupyter nbconvert hr_analytics.ipynb --to html --output index.html
 
-      # 4. Upload artifact for Pages
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: index.html # upload only the generated file
+          path: index.html # <— specify the file, not "."
 
-      # 5. Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
